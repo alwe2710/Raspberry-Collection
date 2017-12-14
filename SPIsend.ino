@@ -1,4 +1,4 @@
-//Load this script to Arduino
+//Upload this script to Arduino
 int vol = 0;
 void setup() {
   Serial.begin(9600);
