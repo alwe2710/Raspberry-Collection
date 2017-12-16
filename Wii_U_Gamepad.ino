@@ -5,9 +5,17 @@ const int Up    = 26;
 const int Down  = 25;
 const int Left  = 24;
 const int Right = 23;
+const int A     = 0;
+const int B     = 1;
+const int x     = 2;
+const int y     = 3;
+const int START = 4;
+const int SELECT= 5;
+const int R     = 7;
+const int ZR    = 8;
+const int L     = 22;
+const int ZL    = 21;
 //Definition of Keyboard Actions
-const int BTN_A       = 0;
-const int BTN_B       = 0;
 const int BTN_X       = 0;
 const int BTN_Y       = 0;
 const int BTN_start   = KEY_ESC;
@@ -28,27 +36,27 @@ int lastButtonState = 0;
 
 void setup() {
 
-  pinMode(0, INPUT_PULLUP);       // 01 A
-  pinMode(1, INPUT_PULLUP);       // 02 B
-  pinMode(2, INPUT_PULLUP);       // 03 X
-  pinMode(3, INPUT_PULLUP);       // 04 Y
-  pinMode(4, INPUT_PULLUP);       // 05 Start
-  pinMode(5, INPUT_PULLUP);       // 06 Select
-  pinMode(7, INPUT_PULLUP);       // 07 R
-  pinMode(8, INPUT_PULLUP);       // 08 ZR
+  pinMode(A, INPUT_PULLUP);       // 01 A
+  pinMode(B, INPUT_PULLUP);       // 02 B
+  pinMode(x, INPUT_PULLUP);       // 03 X
+  pinMode(y, INPUT_PULLUP);       // 04 Y
+  pinMode(START, INPUT_PULLUP);   // 05 Start
+  pinMode(SELECT, INPUT_PULLUP);  // 06 Select
+  pinMode(R, INPUT_PULLUP);       // 07 R
+  pinMode(ZR, INPUT_PULLUP);      // 08 ZR
   pinMode(Up, INPUT_PULLUP);      // 09 Up
   pinMode(Down, INPUT_PULLUP);    // 13 Down
   pinMode(Left, INPUT_PULLUP);    // 14 Left
   pinMode(Right, INPUT_PULLUP);   // 15 Right
-  pinMode(22, INPUT_PULLUP);      // 19 L
-  pinMode(21, INPUT_PULLUP);      // 20 ZL
+  pinMode(L, INPUT_PULLUP);       // 19 L
+  pinMode(ZL, INPUT_PULLUP);      // 20 ZL
   pinMode(LED, OUTPUT);           // LED
   pinMode(MODE, INPUT_PULLUP);    // Control Button
 
 }
 
 void loop_joystick() {
-  if (digitalRead(0) == LOW)
+  if (digitalRead(A) == LOW)
   {
     Joystick.button(1, 1);
   }
@@ -56,7 +64,7 @@ void loop_joystick() {
   {
     Joystick.button(1, 0);
   }
-  if (digitalRead(1) == LOW)
+  if (digitalRead(B) == LOW)
   {
     Joystick.button(2, 1);
   }
@@ -64,7 +72,7 @@ void loop_joystick() {
   {
     Joystick.button(2, 0);
   }
-  if (digitalRead(2) == LOW)
+  if (digitalRead(x) == LOW)
   {
     Joystick.button(3, 1);
   }
@@ -72,7 +80,7 @@ void loop_joystick() {
   {
     Joystick.button(3, 0);
   }
-  if (digitalRead(3) == LOW)
+  if (digitalRead(y) == LOW)
   {
     Joystick.button(4, 1);
   }
@@ -80,7 +88,7 @@ void loop_joystick() {
   {
     Joystick.button(4, 0);
   }
-  if (digitalRead(4) == LOW)
+  if (digitalRead(START) == LOW)
   {
     Joystick.button(5, 1);
   }
@@ -88,7 +96,7 @@ void loop_joystick() {
   {
     Joystick.button(5, 0);
   }
-  if (digitalRead(5) == LOW)
+  if (digitalRead(SELECT) == LOW)
   {
     Joystick.button(6, 1);
   }
@@ -96,7 +104,7 @@ void loop_joystick() {
   {
     Joystick.button(6, 0);
   }
-  if (digitalRead(7) == LOW)
+  if (digitalRead(R) == LOW)
   {
     Joystick.button(7, 1);
   }
@@ -104,7 +112,7 @@ void loop_joystick() {
   {
     Joystick.button(7, 0);
   }
-  if (digitalRead(8) == LOW)
+  if (digitalRead(ZR) == LOW)
   {
     Joystick.button(8, 1);
   }
@@ -112,7 +120,7 @@ void loop_joystick() {
   {
     Joystick.button(8, 0);
   }
-  if (digitalRead(22) == LOW)
+  if (digitalRead(L) == LOW)
   {
     Joystick.button(9, 1);
   }
@@ -120,7 +128,7 @@ void loop_joystick() {
   {
     Joystick.button(9, 0);
   }
-  if (digitalRead(21) == LOW)
+  if (digitalRead(ZL) == LOW)
   {
     Joystick.button(10, 1);
   }
@@ -211,24 +219,26 @@ void loop_joystick() {
 
 
 void loop_keyboard() {
-
-  if (digitalRead(0) == LOW)
+  if (digitalRead(A) == LOW || digitalRead(B) == LOW) 
   {
-    Keyboard.press(BTN_A);
+    if (digitalRead(A) == LOW && digitalRead(B) == HIGH)
+    {
+      Mouse.set_buttons(1, 0, 0);
+    }
+    if (digitalRead(B) == LOW && digitalRead(A) == HIGH)
+    {
+      Mouse.set_buttons(0, 0, 1);
+    }
+    if (digitalRead(A) == LOW && digitalRead(B) == LOW)
+    {
+      Mouse.set_buttons(1, 0, 1);
+    }
   }
   else
   {
-    Keyboard.release(BTN_A);
+    Mouse.set_buttons(0, 0, 0);
   }
-  if (digitalRead(1) == LOW)
-  {
-    Keyboard.press(BTN_B);
-  }
-  else
-  {
-    Keyboard.release(BTN_B);
-  }
-  if (digitalRead(2) == LOW)
+  if (digitalRead(x) == LOW)
   {
     Keyboard.press(BTN_X);
   }
@@ -236,7 +246,7 @@ void loop_keyboard() {
   {
     Keyboard.release(BTN_X);
   }
-  if (digitalRead(3) == LOW)
+  if (digitalRead(y) == LOW)
   {
     Keyboard.press(BTN_Y);
   }
@@ -290,4 +300,3 @@ void loop() {
     loop_keyboard();
   }
 }
-
