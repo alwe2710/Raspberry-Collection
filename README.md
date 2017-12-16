@@ -1,4 +1,4 @@
-# Raspberry-Collectio
+# Raspberry-Collection
 This collection of programs was mainly made for the Wii U Gamepad Raspberry Pi project(combined with Teensy 2 or Teensy 2++). All components can be used for different projects as well<br><br>
 
 Teensy is being used as Controller and Keyboard+Mouse<br><br>
