@@ -1,20 +1,22 @@
 
-const int MODE  = 19;    // TV/Control Button
+const int MODE  = 9;    // TV/Control Button
 const int LED   = 6;     // 11 on Teensy 2.0; 6 on Teensy++ 2.0; for further information go to: https://www.pjrc.com/teensy/pinout.html
-const int Up    = 26;
-const int Down  = 25;
-const int Left  = 24;
-const int Right = 23;
-const int A     = 0;
-const int B     = 1;
-const int x     = 2;
-const int y     = 3;
-const int START = 4;
-const int SELECT= 5;
-const int R     = 7;
-const int ZR    = 8;
-const int L     = 22;
-const int ZL    = 21;
+const int Up    = 17;
+const int Down  = 16;
+const int Left  = 15;
+const int Right = 14;
+const int A     = 18;
+const int B     = 19;
+const int x     = 20;
+const int y     = 21;
+const int START = 22;
+const int SELECT = 23;
+const int R     = 24;
+const int ZR    = 25;
+const int L     = 13;
+const int ZL    = 12;
+const int R_click = 11;
+const int L_click = 10;
 //Definition of Keyboard Actions
 const int BTN_X       = 0;
 const int BTN_Y       = 0;
@@ -136,11 +138,27 @@ void loop_joystick() {
   {
     Joystick.button(10, 0);
   }
+  /*if (digitalRead(R_click) == LOW)
+  {
+    Joystick.button(11, 1);
+  }
+  else
+  {
+    Joystick.button(11, 0);
+  }
+   if (digitalRead(L_click) == LOW)
+  {
+    Joystick.button(12, 1);
+  }
+  else
+  {
+    Joystick.button(12, 0);
+  }*/
 
   //D-Pad
   if (digitalRead(Up) == LOW || digitalRead(Down) == LOW || digitalRead(Left) == LOW || digitalRead(Right) == LOW)
   {
-    //Horizontal
+    //Horizontal/Vertical
     if (digitalRead(Up) == LOW && digitalRead(Left) == HIGH && digitalRead(Right) == HIGH)
     {
       Joystick.hat(0);
@@ -158,7 +176,7 @@ void loop_joystick() {
       Joystick.hat(270);
     }
 
-    //Vertical
+    //Diagonal
     if (digitalRead(Up) == LOW && digitalRead(Right) == LOW)
     {
       Joystick.hat(45);
@@ -213,13 +231,13 @@ void loop_joystick() {
 
   Joystick.X(rX);
   Joystick.Y(rY);
-  Joystick.sliderLeft(rL);
-  Joystick.sliderRight(rR);
+  Joystick.Z(rL);
+  Joystick.Zrotate(rR);
 }
 
 
 void loop_keyboard() {
-  if (digitalRead(A) == LOW || digitalRead(B) == LOW) 
+  if (digitalRead(A) == LOW || digitalRead(B) == LOW)
   {
     if (digitalRead(A) == LOW && digitalRead(B) == HIGH)
     {
@@ -270,6 +288,42 @@ void loop_keyboard() {
   {
     Keyboard.release(BTN_Down);
   }
+  if (digitalRead(Left) == LOW)
+  {
+    Keyboard.press(BTN_Left);
+  }
+  else
+  {
+    Keyboard.release(BTN_Left);
+  }
+  if (digitalRead(Right) == LOW)
+  {
+    Keyboard.press(BTN_Right);
+  }
+  else
+  {
+    Keyboard.release(BTN_Right);
+  }
+  int MouseX = analogRead(1);
+  MouseX = MouseX / 20 - 24.5;
+  int realX = MouseX;
+  if (MouseX > 10)
+    MouseX = 10;
+  if (MouseX < -10)
+    MouseX = -10;
+  if (MouseX <= 0.5 && MouseX >= -0.5)
+    MouseX = 0;
+
+  int MouseY = analogRead(0);
+  MouseY = (MouseY / 20) * -1 + 24.5;
+  int realY = MouseY;
+  if (MouseY > 10)
+    MouseY = 10;
+  if (MouseY < -10)
+    MouseY = -10;
+   if (MouseY <= 0.5 && MouseY >=-0.5)
+    MouseY = 0;
+  Mouse.move(MouseX, MouseY);
 }
 void loop() {
 
