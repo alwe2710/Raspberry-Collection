@@ -244,8 +244,8 @@ void loop_joystick() {
 
   Joystick.Y(rX);
   Joystick.X(rY);
-  Joystick.Z(rZ);
-  Joystick.Zrotate(rR);
+  Joystick.Z(rR);
+  Joystick.Zrotate(rZ);
 }
 
 void loop_keyboard() {
@@ -415,7 +415,7 @@ void loop_keyboard() {
   }
 
   int MouseX = analogRead(4);
-  MouseX = (MouseX / 20 - 25.5) / 2.5;
+  MouseX = (MouseX / 20 - 25.5) / 2;
   /* int realX = MouseX;
     if (MouseX > 10)
      MouseX = 10;
@@ -425,7 +425,7 @@ void loop_keyboard() {
      MouseX = 0;*/
 
   int MouseY = analogRead(5);
-  MouseY = ((MouseY / 20) * -1 + 26) / 2.5;
+  MouseY = ((MouseY / 20) * -1 + 26) / 2;
   /*int realY = MouseY;
     if (MouseY > 10)
     MouseY = 10;
