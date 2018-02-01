@@ -122,13 +122,19 @@ void loop_joystick() {
   {
     Joystick.button(6, 0);
   }
+  if (digitalRead(ZR) == LOW || digitalRead(ZL) == LOW)
+  {
   if (digitalRead(ZR) == LOW)
   {
-    Joystick.button(9, 1);
+    Joystick.sliderLeft(0);
+  }
+  if (digitalRead(ZL) == LOW)
+  {
+    Joystick.sliderLeft(1023);
   }
   else
   {
-    Joystick.button(9, 0);
+    Joystick.sliderLeft(511);
   }
   if (digitalRead(L) == LOW)
   {
@@ -137,14 +143,6 @@ void loop_joystick() {
   else
   {
     Joystick.button(5, 0);
-  }
-  if (digitalRead(ZL) == LOW)
-  {
-    Joystick.button(10, 1);
-  }
-  else
-  {
-    Joystick.button(10, 0);
   }
   if (digitalRead(R_click) == LOW)
   {
