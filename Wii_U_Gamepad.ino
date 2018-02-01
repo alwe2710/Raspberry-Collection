@@ -213,38 +213,38 @@ void loop_joystick() {
   }
 
   //Control Sticks
-  int rX = analogRead(4);
-  rX = (rX - 512) * 1.5 + 512 - 75;
-  if (rX > 1023)
-    rX = 1023;
-  if (rX < 0)
-    rX = 0;
-
-  int rY = analogRead(5);
-  rY = (rY - 512) * 1.5 + 512 - 100;
-  if (rY > 1023)
-    rY = 1023;
-  if (rY < 0)
-    rY = 0;
-  rY = abs(1023 - rY);
-
-  int rL = analogRead(0);
-  rL = (rL - 512) * 1.5 + 512 + 21;
-  if (rL > 1023)
-    rL = 1023;
-  if (rL < 0)
-    rL = 0;
-
-  int rR = analogRead(1);
-  rR = (rR - 512) * 1.5 + 512 + 26;
+  int rR = analogRead(4);
+  rR = (rR - 512) * 1.5 + 512 - 75;
   if (rR > 1023)
     rR = 1023;
   if (rR < 0)
     rR = 0;
 
+  int rZ = analogRead(5);
+  rZ = (rZ - 512) * 1.5 + 512 - 100;
+  if (rZ > 1023)
+    rZ = 1023;
+  if (rZ < 0)
+    rZ = 0;
+  rZ = abs(1023 - rZ);
+
+  int rX = analogRead(0);
+  rX = (rX - 512) * 1.5 + 512 + 21;
+  if (rX > 1023)
+    rX = 1023;
+  if (rX < 0)
+    rX = 0;
+
+  int rY = analogRead(1);
+  rY = (rY - 512) * 1.5 + 512 + 26;
+  if (rY > 1023)
+    rY = 1023;
+  if (rY < 0)
+    rY = 0;
+
   Joystick.X(rX);
   Joystick.Y(rY);
-  Joystick.Z(rL);
+  Joystick.Z(rZ);
   Joystick.Zrotate(rR);
 }
 
