@@ -66,7 +66,7 @@ void setup() {
 }
 
 void loop_joystick() {
-  if (digitalRead(A) == LOW)
+  if (digitalRead(B) == LOW)
   {
     Joystick.button(1, 1);
   }
@@ -74,7 +74,7 @@ void loop_joystick() {
   {
     Joystick.button(1, 0);
   }
-  if (digitalRead(B) == LOW)
+  if (digitalRead(A) == LOW)
   {
     Joystick.button(2, 1);
   }
@@ -82,7 +82,7 @@ void loop_joystick() {
   {
     Joystick.button(2, 0);
   }
-  if (digitalRead(x) == LOW)
+  if (digitalRead(y) == LOW)
   {
     Joystick.button(3, 1);
   }
@@ -90,7 +90,7 @@ void loop_joystick() {
   {
     Joystick.button(3, 0);
   }
-  if (digitalRead(y) == LOW)
+  if (digitalRead(x) == LOW)
   {
     Joystick.button(4, 1);
   }
@@ -100,21 +100,13 @@ void loop_joystick() {
   }
   if (digitalRead(START) == LOW)
   {
-    Joystick.button(5, 1);
+    Joystick.button(8, 1);
   }
   else
   {
-    Joystick.button(5, 0);
+    Joystick.button(8, 0);
   }
   if (digitalRead(SELECT) == LOW)
-  {
-    Joystick.button(6, 1);
-  }
-  else
-  {
-    Joystick.button(6, 0);
-  }
-  if (digitalRead(R) == LOW)
   {
     Joystick.button(7, 1);
   }
@@ -122,21 +114,29 @@ void loop_joystick() {
   {
     Joystick.button(7, 0);
   }
-  if (digitalRead(ZR) == LOW)
+  if (digitalRead(R) == LOW)
   {
-    Joystick.button(8, 1);
+    Joystick.button(6, 1);
   }
   else
   {
-    Joystick.button(8, 0);
+    Joystick.button(6, 0);
   }
-  if (digitalRead(L) == LOW)
+  if (digitalRead(ZR) == LOW)
   {
     Joystick.button(9, 1);
   }
   else
   {
     Joystick.button(9, 0);
+  }
+  if (digitalRead(L) == LOW)
+  {
+    Joystick.button(5, 1);
+  }
+  else
+  {
+    Joystick.button(5, 0);
   }
   if (digitalRead(ZL) == LOW)
   {
@@ -148,19 +148,19 @@ void loop_joystick() {
   }
   if (digitalRead(R_click) == LOW)
   {
-    Joystick.button(11, 1);
+    Joystick.button(10, 1);
   }
   else
   {
-    Joystick.button(11, 0);
+    Joystick.button(10, 0);
   }
   if (digitalRead(L_click) == LOW)
   {
-    Joystick.button(12, 1);
+    Joystick.button(9, 1);
   }
   else
   {
-    Joystick.button(12, 0);
+    Joystick.button(9, 0);
   }
   while (digitalRead(Hotkey) == LOW)
   {
@@ -242,8 +242,8 @@ void loop_joystick() {
   if (rY < 0)
     rY = 0;
 
-  Joystick.X(rX);
-  Joystick.Y(rY);
+  Joystick.Y(rX);
+  Joystick.X(rY);
   Joystick.Z(rZ);
   Joystick.Zrotate(rR);
 }
