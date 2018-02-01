@@ -1,35 +1,38 @@
 
-const int MODE  = 9;    // TV/Control Button
+const int MODE  = 23;    // TV/Control Button
 const int LED   = 6;     // 11 on Teensy 2.0; 6 on Teensy++ 2.0; for further information go to: https://www.pjrc.com/teensy/pinout.html
-const int Up    = 17;
-const int Down  = 16;
-const int Left  = 15;
-const int Right = 14;
-const int A     = 18;
-const int B     = 19;
-const int x     = 20;
-const int y     = 21;
-const int START = 22;
-const int SELECT = 23;
-const int R     = 24;
-const int ZR    = 25;
-const int L     = 13;
-const int ZL    = 12;
-const int R_click = 11;
-const int L_click = 10;
+const int Up    = 0;
+const int Down  = 1;
+const int Left  = 3;
+const int Right = 2;
+const int A     = 13;
+const int B     = 12;
+const int x     = 11;
+const int y     = 10;
+const int START = 9;
+const int SELECT = 14;
+const int R     = 15;
+const int ZR    = 8;
+const int L     = 4; //4
+const int ZL    = 5;
+const int R_click = 21;
+const int L_click = 18;
+const int Hotkey = 22;
 //Definition of Keyboard Actions
+const int BTN_A       = KEY_ENTER;
+const int BTN_B       = KEY_BACKSPACE;
 const int BTN_X       = 0;
 const int BTN_Y       = 0;
 const int BTN_start   = KEY_ESC;
 const int BTN_select  = 0;
-const int BTN_R       = 0;
-const int BTN_ZR      = 0;
 const int BTN_Up      = KEY_W;
+const int Stick_Up    = KEY_W;
 const int BTN_Down    = KEY_S;
+const int Stick_Down  = KEY_S;
 const int BTN_Left    = KEY_A;
+const int Stick_Left  = KEY_A;
 const int BTN_Right   = KEY_D;
-const int BTN_L       = 0;
-const int BTN_ZL      = 0;
+const int Stick_Right = KEY_D;
 
 int vol = 0;
 int buttonPushCounter = 0;   // counter for the number of button presses
@@ -38,22 +41,27 @@ int lastButtonState = 0;
 
 void setup() {
 
-  pinMode(A, INPUT_PULLUP);       // 01 A
-  pinMode(B, INPUT_PULLUP);       // 02 B
-  pinMode(x, INPUT_PULLUP);       // 03 X
-  pinMode(y, INPUT_PULLUP);       // 04 Y
-  pinMode(START, INPUT_PULLUP);   // 05 Start
-  pinMode(SELECT, INPUT_PULLUP);  // 06 Select
-  pinMode(R, INPUT_PULLUP);       // 07 R
-  pinMode(ZR, INPUT_PULLUP);      // 08 ZR
-  pinMode(Up, INPUT_PULLUP);      // 09 Up
-  pinMode(Down, INPUT_PULLUP);    // 13 Down
-  pinMode(Left, INPUT_PULLUP);    // 14 Left
-  pinMode(Right, INPUT_PULLUP);   // 15 Right
-  pinMode(L, INPUT_PULLUP);       // 19 L
-  pinMode(ZL, INPUT_PULLUP);      // 20 ZL
+  pinMode(A, INPUT_PULLUP);
+  pinMode(B, INPUT_PULLUP);
+  pinMode(x, INPUT_PULLUP);
+  pinMode(y, INPUT_PULLUP);
+  pinMode(START, INPUT_PULLUP);
+  pinMode(SELECT, INPUT_PULLUP);
+  pinMode(R, INPUT_PULLUP);
+  pinMode(ZR, INPUT_PULLUP);
+  pinMode(Up, INPUT_PULLUP);
+  pinMode(Down, INPUT_PULLUP);
+  pinMode(Left, INPUT_PULLUP);
+  pinMode(Right, INPUT_PULLUP);
+  pinMode(L, INPUT_PULLUP);
+  pinMode(ZL, INPUT_PULLUP);
+  pinMode(R_click, INPUT_PULLUP);
+  pinMode(L_click, INPUT_PULLUP);
+  pinMode(Hotkey, INPUT_PULLUP);
   pinMode(LED, OUTPUT);           // LED
   pinMode(MODE, INPUT_PULLUP);    // Control Button
+  pinMode(19, INPUT_PULLUP);
+  Serial.begin(9600);
 
 }
 
@@ -138,7 +146,7 @@ void loop_joystick() {
   {
     Joystick.button(10, 0);
   }
-  /*if (digitalRead(R_click) == LOW)
+  if (digitalRead(R_click) == LOW)
   {
     Joystick.button(11, 1);
   }
@@ -146,14 +154,19 @@ void loop_joystick() {
   {
     Joystick.button(11, 0);
   }
-   if (digitalRead(L_click) == LOW)
+  if (digitalRead(L_click) == LOW)
   {
     Joystick.button(12, 1);
   }
   else
   {
     Joystick.button(12, 0);
-  }*/
+  }
+  while (digitalRead(Hotkey) == LOW)
+  {
+    Joystick.button(5, 1);
+    Joystick.button(6, 1);
+  }
 
   //D-Pad
   if (digitalRead(Up) == LOW || digitalRead(Down) == LOW || digitalRead(Left) == LOW || digitalRead(Right) == LOW)
@@ -235,19 +248,18 @@ void loop_joystick() {
   Joystick.Zrotate(rR);
 }
 
-
 void loop_keyboard() {
-  if (digitalRead(A) == LOW || digitalRead(B) == LOW)
+  if (digitalRead(ZR) == LOW || digitalRead(ZL) == LOW)
   {
-    if (digitalRead(A) == LOW && digitalRead(B) == HIGH)
+    if (digitalRead(ZR) == LOW && digitalRead(ZL) == HIGH)
     {
       Mouse.set_buttons(1, 0, 0);
     }
-    if (digitalRead(B) == LOW && digitalRead(A) == HIGH)
+    if (digitalRead(ZR) == HIGH && digitalRead(ZL) == LOW)
     {
       Mouse.set_buttons(0, 0, 1);
     }
-    if (digitalRead(A) == LOW && digitalRead(B) == LOW)
+    if (digitalRead(ZR) == LOW && digitalRead(ZL) == LOW)
     {
       Mouse.set_buttons(1, 0, 1);
     }
@@ -258,7 +270,10 @@ void loop_keyboard() {
   }
   if (digitalRead(x) == LOW)
   {
-    Keyboard.press(BTN_X);
+    while (digitalRead(x) == LOW)
+    {
+      Keyboard.press(BTN_X);
+    }
   }
   else
   {
@@ -266,7 +281,10 @@ void loop_keyboard() {
   }
   if (digitalRead(y) == LOW)
   {
-    Keyboard.press(BTN_Y);
+    while (digitalRead(y) == LOW)
+    {
+      Keyboard.press(BTN_Y);
+    }
   }
   else
   {
@@ -274,7 +292,10 @@ void loop_keyboard() {
   }
   if (digitalRead(Up) == LOW)
   {
-    Keyboard.press(BTN_Up);
+    while (digitalRead(Up) == LOW)
+    {
+      Keyboard.press(BTN_Up);
+    }
   }
   else
   {
@@ -282,7 +303,10 @@ void loop_keyboard() {
   }
   if (digitalRead(Down) == LOW)
   {
-    Keyboard.press(BTN_Down);
+    while (digitalRead(Down) == LOW)
+    {
+      Keyboard.press(BTN_Down);
+    }
   }
   else
   {
@@ -290,7 +314,10 @@ void loop_keyboard() {
   }
   if (digitalRead(Left) == LOW)
   {
-    Keyboard.press(BTN_Left);
+    while (digitalRead(Left) == LOW)
+    {
+      Keyboard.press(BTN_Left);
+    }
   }
   else
   {
@@ -298,33 +325,117 @@ void loop_keyboard() {
   }
   if (digitalRead(Right) == LOW)
   {
-    Keyboard.press(BTN_Right);
+    while (digitalRead(Right) == LOW)
+    {
+      Keyboard.press(BTN_Right);
+    }
   }
   else
   {
     Keyboard.release(BTN_Right);
   }
-  int MouseX = analogRead(1);
-  MouseX = MouseX / 20 - 24.5;
-  int realX = MouseX;
-  if (MouseX > 10)
-    MouseX = 10;
-  if (MouseX < -10)
-    MouseX = -10;
-  if (MouseX <= 0.5 && MouseX >= -0.5)
-    MouseX = 0;
+  if (digitalRead(START) == LOW)
+  {
+    while (digitalRead(START) == LOW)
+    {
+      Keyboard.press(BTN_start);
+    }
+  }
+  else
+  {
+    Keyboard.release(BTN_start);
+  }
+  if (digitalRead(A) == LOW)
+  {
+    while (digitalRead(A) == LOW)
+    {
+      Keyboard.press(BTN_A);
+    }
+  }
+  else
+  {
+    Keyboard.release(BTN_A);
+  }
+  if (digitalRead(B) == LOW)
+  {
+    while (digitalRead(B) == LOW)
+    {
+      Keyboard.press(BTN_B);
+    }
+  }
+  else
+  {
+    Keyboard.release(BTN_B);
+  }
+  if (digitalRead(R) == LOW)
+  {
+    while (digitalRead(R) == LOW)
+    {
+      Mouse.scroll(-1);
+      delay (100);
+    }
+  }
+  if (digitalRead(L) == LOW)
+  {
+    while (digitalRead(L) == LOW)
+    {
+      Mouse.scroll(1);
+      delay (100);
+    }
 
-  int MouseY = analogRead(0);
-  MouseY = (MouseY / 20) * -1 + 24.5;
-  int realY = MouseY;
-  if (MouseY > 10)
+  }
+
+
+  int StickX = analogRead(1);
+  StickX = StickX - 512 - 25;
+  if (StickX <= -100)
+  {
+    Keyboard.press(Stick_Left);
+  }
+  if (StickX >= 100)
+  {
+    Keyboard.press(Stick_Right);
+  }
+  int StickY = analogRead(0);
+  StickY = StickY - 512 - 25;
+  if (StickY <= -100)
+  {
+    Keyboard.press(Stick_Down);
+  }
+  if (StickY >= 100)
+  {
+    Keyboard.press(Stick_Up);
+  }
+  else
+  {
+    Keyboard.release(Stick_Up);
+    Keyboard.release(Stick_Down);
+    Keyboard.release(Stick_Left);
+    Keyboard.release(Stick_Right);
+  }
+
+  int MouseX = analogRead(4);
+  MouseX = (MouseX / 20 - 25.5) / 2.5;
+  /* int realX = MouseX;
+    if (MouseX > 10)
+     MouseX = 10;
+    if (MouseX < -10)
+     MouseX = -10;
+    if (MouseX <= 0.5 && MouseX >= -0.5)
+     MouseX = 0;*/
+
+  int MouseY = analogRead(5);
+  MouseY = ((MouseY / 20) * -1 + 26) / 2.5;
+  /*int realY = MouseY;
+    if (MouseY > 10)
     MouseY = 10;
-  if (MouseY < -10)
+    if (MouseY < -10)
     MouseY = -10;
-   if (MouseY <= 0.5 && MouseY >=-0.5)
-    MouseY = 0;
+    if (MouseY <= 0.5 && MouseY >= -0.5)
+    MouseY = 0;*/
   Mouse.move(MouseX, MouseY);
 }
+
 void loop() {
 
   buttonState = digitalRead(MODE);
@@ -350,7 +461,6 @@ void loop() {
   }
   else
   {
-
     loop_keyboard();
   }
 }
